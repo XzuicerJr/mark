@@ -19,7 +19,9 @@ export const authOptions: NextAuthConfig = {
   session: { strategy: "jwt" },
   cookies: {
     sessionToken: {
-      name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,
+      name: `${
+        VERCEL_DEPLOYMENT ? "__Secure-" : ""
+      }next-auth.mark.session-token`,
       options: {
         httpOnly: true,
         sameSite: "lax",
@@ -37,17 +39,7 @@ export const authOptions: NextAuthConfig = {
     error: "/login",
   },
   callbacks: {
-    authorized: async ({ auth }) => {
-      console.log({ auth });
-      if (!auth) {
-        return false;
-      }
-
-      return true;
-    },
     signIn: async ({ user, account, profile }) => {
-      console.log({ user, account, profile });
-
       if (!user.email) {
         return false;
       }
@@ -115,7 +107,7 @@ export const authOptions: NextAuthConfig = {
     session: async ({ session, token }) => {
       session.user = {
         id: token.sub,
-        // @ts-ignore
+        // @ts-expect-error - token.user is not typed
         ...(token || session).user,
       };
       return session;
