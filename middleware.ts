@@ -1,7 +1,5 @@
-export { auth as middleware } from "@/lib/auth";
-
-import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
-import { getUserViaToken, parse } from "./lib/middleware/utils";
+import { NextRequest, NextResponse } from "next/server";
+import { getUserViaToken, parse } from "./lib/middleware";
 
 export const config = {
   matcher: [
@@ -16,12 +14,11 @@ export const config = {
   ],
 };
 
-export default async function middleware(req: NextRequest, ev: NextFetchEvent) {
+export default async function middleware(req: NextRequest) {
   const { path, fullPath } = parse(req);
 
   const user = await getUserViaToken(req);
 
-  // if there's no user and the path isn't /login or /signup, redirect to /login
   if (!user && path !== "/login" && path !== "/signup") {
     return NextResponse.redirect(
       new URL(
@@ -29,8 +26,9 @@ export default async function middleware(req: NextRequest, ev: NextFetchEvent) {
         req.url
       )
     );
+  } else if (user) {
+    if (["/login", "/signup"].includes(path)) {
+      return NextResponse.redirect(new URL(`/`, req.url));
+    }
   }
-
-  // otherwise, rewrite the path to /
-  return NextResponse.rewrite(new URL(`/${fullPath}`, req.url));
 }

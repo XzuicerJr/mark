@@ -12,13 +12,13 @@ import { signIn } from "next-auth/react";
 import { Google } from "@/components/icons";
 import Link from "next/link";
 
-export default function LoginPage() {
+export default function SignupPage() {
   return (
     <section className="space-y-4 text-center">
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>Login with your Google account</CardDescription>
+          <CardTitle className="text-xl">Welcome</CardTitle>
+          <CardDescription>Signup with your Google account</CardDescription>
         </CardHeader>
         <CardContent>
           <Button
@@ -27,14 +27,14 @@ export default function LoginPage() {
             onClick={() => signIn("google")}
           >
             <Google />
-            Login with Google
+            Signup with Google
           </Button>
         </CardContent>
       </Card>
       <p className="text-sm text-muted-foreground">
-        Don&apos;t have an account?{" "}
+        Already have an account?{" "}
         <Button variant="link" className="p-0 font-medium" asChild>
-          <Link href="/signup">Signup</Link>
+          <Link href="/login">Login</Link>
         </Button>
       </p>
     </section>
