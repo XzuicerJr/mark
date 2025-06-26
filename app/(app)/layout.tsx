@@ -1,5 +1,6 @@
+import ApplicationLayout from "@/components/layout/app";
 import { ReactNode } from "react";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
-  return <>{children}</>;
+  return <ApplicationLayout>{children}</ApplicationLayout>;
 }
