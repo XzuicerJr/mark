@@ -2,27 +2,26 @@
 
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
-  format,
-  eachDayOfInterval,
-  startOfWeek,
-  endOfWeek,
-  isToday,
   addDays,
+  addYears,
+  differenceInDays,
+  eachDayOfInterval,
+  endOfWeek,
+  format,
   isAfter,
   isBefore,
-  differenceInDays,
-  addYears,
-  subYears,
+  isToday,
+  startOfWeek,
 } from "date-fns";
 import { LucideProps } from "lucide-react";
-import React, { useRef, useEffect } from "react";
+import React from "react";
 
 export interface HabitProps {
   className?: string;
@@ -257,7 +256,7 @@ export function Habit({
       date.setDate(date.getDate() + i);
 
       return date;
-    }
+    },
   );
 
   // // if the current day is after the last day, add the needed days to the days array
@@ -266,8 +265,8 @@ export function Habit({
 
     days.push(
       ...Array.from({ length: daysToAdd }, (_, i) =>
-        addDays(days[days.length - 1], i + 1)
-      )
+        addDays(days[days.length - 1], i + 1),
+      ),
     );
   }
 
@@ -304,7 +303,7 @@ export function Habit({
     >
       <CardHeader className="flex flex-row items-start gap-4 p-2">
         <div
-          className="rounded-xl p-2 md:p-3 flex items-center justify-center"
+          className="flex items-center justify-center rounded-xl p-2 md:p-3"
           style={{
             backgroundColor: getColor[color][theme].icon.background,
           }}
@@ -312,7 +311,7 @@ export function Habit({
           <Icon className="size-6 fill-white" />
         </div>
         <div className="flex-1">
-          <CardTitle className="text-white text-xl font-medium">
+          <CardTitle className="text-xl font-medium text-white">
             {title}
           </CardTitle>
           <CardDescription
@@ -325,17 +324,17 @@ export function Habit({
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="pt-0 p-1.5">
+      <CardContent className="p-1.5 pt-0">
         {isAfter(startDate, new Date()) ? (
           <div
-            className="flex flex-col items-center justify-center rounded-lg h-[6.375rem]"
+            className="flex h-[6.375rem] flex-col items-center justify-center rounded-lg"
             style={{
               backgroundColor: getColor[color][theme].icon.background,
               color: "#fff",
             }}
           >
             <div
-              className="text-lg font-semibold mb-1"
+              className="mb-1 text-lg font-semibold"
               style={{ color: "#fff" }}
             >
               This habit hasn't started yet
@@ -346,7 +345,7 @@ export function Habit({
           </div>
         ) : (
           <div className="overflow-x-hidden">
-            <table className="border-separate border-spacing-0.5 w-full relative float-right">
+            <table className="relative float-right w-full border-separate border-spacing-0.5">
               <tbody>
                 {daysOfWeek.map((weekday, rowIdx) => (
                   <tr key={`${weekday.short}-${rowIdx}`}>
@@ -362,8 +361,8 @@ export function Habit({
                               title={format(date, "MMM d, yyyy")}
                               data-date={format(date, "yyyy-MM-dd")}
                               className={cn(
-                                "rounded-[3px] size-2.5",
-                                isToday(date) && "border-1 border-white"
+                                "size-2.5 rounded-[3px]",
+                                isToday(date) && "border-1 border-white",
                               )}
                               style={{
                                 backgroundColor: isDone

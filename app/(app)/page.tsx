@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <>
       <AddHabit />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+      <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         {habits.map((habit, idx) => (
           <Habit key={`habit-${idx}`} {...habit} />
         ))}
