@@ -2,6 +2,7 @@
 
 import { ChevronDown, LogOut } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +11,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 
@@ -28,7 +28,7 @@ export function NavUser({
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="hover:bg-accent-foreground/10">
           <span className="truncate font-medium">{user.name}</span>
-          <div className="h-8 w-8 rounded-lg bg-muted overflow-hidden">
+          <div className="bg-muted h-8 w-8 overflow-hidden rounded-lg">
             {user.avatar ? (
               <>
                 <Image
@@ -54,7 +54,7 @@ export function NavUser({
       >
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-            <div className="h-8 w-8 rounded-lg bg-muted border border-border overflow-hidden">
+            <div className="bg-muted border-border h-8 w-8 overflow-hidden rounded-lg border">
               {user.avatar ? (
                 <>
                   <Image
