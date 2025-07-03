@@ -1,10 +1,13 @@
-import type { NextAuthConfig, User } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import LoginLink from "@/components/emails/templates/login-link";
 import { prisma } from "@/prisma";
-import { JWT } from "next-auth/jwt";
-import { UserProps } from "../types";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { NextAuthConfig, User } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
+import { JWT } from "next-auth/jwt";
+import GoogleProvider from "next-auth/providers/google";
+import ResendProvider from "next-auth/providers/resend";
+import { sendResendEmail } from "../email/resend";
+import { UserProps } from "../types";
 
 const VERCEL_DEPLOYMENT = !!process.env.VERCEL_URL;
 
@@ -13,6 +16,21 @@ export const authOptions: NextAuthConfig = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    ResendProvider({
+      apiKey: process.env.RESEND_API_KEY!,
+      sendVerificationRequest({ identifier, url }) {
+        if (process.env.NODE_ENV === "development") {
+          console.log(`Login link: ${url}`);
+          return;
+        } else {
+          sendResendEmail({
+            email: identifier,
+            subject: `Your ${process.env.NEXT_PUBLIC_APP_NAME} Login Link`,
+            react: LoginLink({ url, email: identifier }),
+          });
+        }
+      },
     }),
   ],
   adapter: PrismaAdapter(prisma),
