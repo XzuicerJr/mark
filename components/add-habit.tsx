@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { getColor } from "@/components/habit";
+import IconPickerDrawer from "@/components/icon-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getColor } from "@/components/habit";
-import IconPickerDrawer from "@/components/icon-picker";
 import Modal from "@/components/ui/modal";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 export default function AddHabit() {
   const [showModal, setShowModal] = useState(false);
@@ -51,7 +51,7 @@ export default function AddHabit() {
           },
         }}
       >
-        <div className="flex flex-col gap-4 items-center py-4">
+        <div className="flex flex-col items-center gap-4 py-4">
           <IconPickerDrawer
             selectedIcon={formData.icon}
             onIconSelect={handleIconSelect}
@@ -62,6 +62,7 @@ export default function AddHabit() {
           <div className="flex flex-col gap-2">
             <Label>Name</Label>
             <Input
+              className="max-w-full"
               value={formData.name}
               onChange={(e) => handleInputChange("name", e.target.value)}
             />
@@ -70,6 +71,7 @@ export default function AddHabit() {
           <div className="flex flex-col gap-2">
             <Label>Description</Label>
             <Input
+              className="max-w-full"
               value={formData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
             />
@@ -90,7 +92,7 @@ export default function AddHabit() {
                 <Button
                   key={color}
                   variant="outline"
-                  className={cn("flex-1 h-10 border-2")}
+                  className={cn("h-10 flex-1 border-2")}
                   onClick={() => handleInputChange("color", color)}
                   style={{
                     backgroundColor:

@@ -1,27 +1,27 @@
 "use client";
 
+import { useMediaQuery } from "@/components/hooks/use-media-query";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Drawer,
-  DrawerDescription,
+  DrawerClose,
   DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-  DrawerFooter,
-  DrawerClose,
 } from "@/components/ui/drawer";
-import { useMediaQuery } from "@/components/hooks/use-media-query";
-import { Button } from "./button";
-import { Dispatch, SetStateAction } from "react";
 import { cn } from "@/lib/utils";
+import { Dispatch, SetStateAction } from "react";
+import { Button } from "./button";
 
 interface ModalProps {
   className?: string;
@@ -89,7 +89,7 @@ export default function Modal({
 
   return (
     <Dialog modal open={showModal} onOpenChange={setShowModal}>
-      <DialogContent className={cn(className, "max-w-lg mx-auto w-full")}>
+      <DialogContent className={cn(className, "mx-auto w-full max-w-lg")}>
         {(title || description) && (
           <DialogHeader>
             {title && <DialogTitle>{title}</DialogTitle>}

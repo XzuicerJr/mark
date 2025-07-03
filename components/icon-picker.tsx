@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
-  DrawerDescription,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -13,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { icons as lucideIcons } from "lucide-react";
+import { useState } from "react";
 
 interface IconPickerProps {
   selectedIcon: string;
@@ -24,18 +24,19 @@ function IconPicker({ selectedIcon, onIconSelect }: IconPickerProps) {
 
   // Filter icons based on search term
   const filteredIcons = Object.keys(lucideIcons).filter((iconName) =>
-    iconName.toLowerCase().includes(searchTerm.toLowerCase())
+    iconName.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
-    <div className="flex flex-col gap-4 mt-4">
+    <div className="mt-4 flex flex-col gap-4">
       <Input
+        className="max-w-full"
         placeholder="Search for an icon..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
-      <section className="max-h-[50dvh] p-2 border rounded-md overflow-y-auto">
+      <section className="max-h-[50dvh] overflow-y-auto rounded-md border p-2">
         <div className="grid grid-cols-[repeat(auto-fill,minmax(2rem,1fr))] gap-5">
           {filteredIcons.map((iconName) => {
             const IconComponent =
@@ -49,10 +50,10 @@ function IconPicker({ selectedIcon, onIconSelect }: IconPickerProps) {
                 size="icon"
                 onClick={() => onIconSelect(iconName)}
                 className={cn(
-                  "p-2 rounded-md border transition-colors flex items-center justify-center",
+                  "flex items-center justify-center rounded-md border p-2 transition-colors",
                   isSelected
                     ? "border-gray-400"
-                    : "border-border hover:border-gray-300"
+                    : "border-border hover:border-gray-300",
                 )}
                 title={iconName}
               >
@@ -62,7 +63,7 @@ function IconPicker({ selectedIcon, onIconSelect }: IconPickerProps) {
           })}
         </div>
         {filteredIcons.length === 0 && (
-          <div className="text-center text-gray-500 py-4">
+          <div className="py-4 text-center text-gray-500">
             No icons found matching "{searchTerm}"
           </div>
         )}
@@ -87,7 +88,7 @@ export default function IconPickerDrawer({
         </Button>
       </DrawerTrigger>
       <DrawerContent className="px-4">
-        <section className="max-w-lg mx-auto w-full">
+        <section className="mx-auto w-full max-w-lg">
           <DrawerHeader className="sr-only">
             <DrawerTitle>Select an icon</DrawerTitle>
             <DrawerDescription>
