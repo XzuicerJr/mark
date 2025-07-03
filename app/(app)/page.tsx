@@ -1,5 +1,6 @@
 "use client";
 
+import AddHabit from "@/components/add-habit";
 import { Habit, HabitProps } from "@/components/habit";
 import { subDays } from "date-fns";
 import { PersonStanding } from "lucide-react";
@@ -57,10 +58,13 @@ const habits: HabitProps[] = [
 ];
 export default function Home() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-      {habits.map((habit, idx) => (
-        <Habit key={`habit-${idx}`} {...habit} />
-      ))}
-    </div>
+    <>
+      <AddHabit />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+        {habits.map((habit, idx) => (
+          <Habit key={`habit-${idx}`} {...habit} />
+        ))}
+      </div>
+    </>
   );
 }

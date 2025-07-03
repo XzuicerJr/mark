@@ -53,7 +53,7 @@ interface ColorScheme {
   dark: Color;
 }
 
-const getColor: Record<HabitProps["color"], ColorScheme> = {
+export const getColor: Record<HabitProps["color"], ColorScheme> = {
   green: {
     light: {
       card: "#e6f9ec", // very light green
@@ -246,7 +246,8 @@ export function Habit({
   startDate,
   color,
 }: HabitProps) {
-  const theme = "dark";
+  const theme = "dark"; // TODO: Add theme selector
+
   let days: Date[] = [];
 
   days = Array.from(
