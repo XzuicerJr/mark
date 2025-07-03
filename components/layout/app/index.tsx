@@ -2,9 +2,9 @@ import Header from "./header";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <section className="flex flex-col h-dvh py-2 md:py-4 px-0 md:px-4 bg-muted gap-4">
+    <section className="bg-muted flex h-dvh flex-col gap-4 px-0 py-2 md:px-4 md:py-4">
       <Header />
-      <main className="w-full rounded-lg border p-2 md:p-4 bg-background flex-1">
+      <main className="bg-background w-full flex-1 rounded-lg border p-2 md:p-4">
         {children}
       </main>
     </section>

@@ -1,5 +1,7 @@
 "use client";
 
+import { Google } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,9 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
-import { Google } from "@/components/icons";
 import Link from "next/link";
 
 export default function SignupPage() {
@@ -31,7 +31,7 @@ export default function SignupPage() {
           </Button>
         </CardContent>
       </Card>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         Already have an account?{" "}
         <Button variant="link" className="p-0 font-medium" asChild>
           <Link href="/login">Login</Link>
