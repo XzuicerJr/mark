@@ -28,21 +28,12 @@ export function NavUser({
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="hover:bg-accent-foreground/10">
           <span className="truncate font-medium">{user.name}</span>
-          <div className="bg-muted h-8 w-8 overflow-hidden rounded-lg">
-            {user.avatar ? (
-              <>
-                <Image
-                  src={user.avatar}
-                  alt={user.name}
-                  width={32}
-                  height={32}
-                />
-                <span className="sr-only">{user.name.charAt(0)}</span>
-              </>
-            ) : (
-              <span>{user.name.charAt(0)}</span>
-            )}
-          </div>
+          {user.avatar ? (
+            <div className="bg-muted flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg">
+              <Image src={user.avatar} alt={user.name} width={32} height={32} />
+              <span className="sr-only">{user.name.charAt(0)}</span>
+            </div>
+          ) : null}
           <ChevronDown className="ml-auto size-4" />
         </Button>
       </DropdownMenuTrigger>
@@ -54,21 +45,17 @@ export function NavUser({
       >
         <DropdownMenuLabel className="p-0 font-normal">
           <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-            <div className="bg-muted border-border h-8 w-8 overflow-hidden rounded-lg border">
-              {user.avatar ? (
-                <>
-                  <Image
-                    src={user.avatar}
-                    alt={user.name}
-                    width={32}
-                    height={32}
-                  />
-                  <span className="sr-only">{user.name.charAt(0)}</span>
-                </>
-              ) : (
-                <span>{user.name.charAt(0)}</span>
-              )}
-            </div>
+            {user.avatar ? (
+              <div className="bg-muted flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg border">
+                <Image
+                  src={user.avatar}
+                  alt={user.name}
+                  width={32}
+                  height={32}
+                />
+                <span className="sr-only">{user.name.charAt(0)}</span>
+              </div>
+            ) : null}
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-medium">{user.name}</span>
               <span className="truncate text-xs">{user.email}</span>
