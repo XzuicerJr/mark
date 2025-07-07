@@ -1,6 +1,6 @@
 "use server";
 
-import { emailSchema } from "@/lib/zod/auth";
+import { emailSchema } from "@/lib/zod/schema/auth";
 import { prisma } from "@/prisma";
 import { z } from "zod";
 import { throwIfAuthenticated } from "./auth/throw-if-authenticated";
@@ -21,9 +21,13 @@ export const checkAccountExistsAction = actionClient
       where: {
         email,
       },
+      select: {
+        passwordHash: true,
+      },
     });
 
     return {
       accountExists: !!user,
+      hasPassword: !!user?.passwordHash,
     };
   });
