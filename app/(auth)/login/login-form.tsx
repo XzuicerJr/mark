@@ -2,6 +2,7 @@
 
 import { useLocalStorage } from "@/components/hooks/use-local-storage";
 import { AnimatedSizeContainer } from "@/components/ui/animated-size-container";
+import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import {
   ComponentType,
@@ -23,6 +24,9 @@ export type AuthMethod = (typeof authMethods)[number];
 export const errorCodes = {
   "no-credentials": "Please provide an email and password.",
   "invalid-credentials": "Email or password is incorrect.",
+  "exceeded-login-attempts":
+    "Account has been locked due to too many login attempts. Please contact support to unlock your account.",
+  "too-many-login-attempts": "Too many login attempts. Please try again later.",
   "email-not-verified": "Please verify your email address.",
   Callback:
     "We encountered an issue processing your request. Please try again or contact support if the problem persists.",
@@ -36,12 +40,16 @@ export const LoginFormContext = createContext<{
   authMethod: AuthMethod | undefined;
   setAuthMethod: Dispatch<SetStateAction<AuthMethod | undefined>>;
   clickedMethod: AuthMethod | undefined;
+  showPasswordField: boolean;
+  setShowPasswordField: Dispatch<SetStateAction<boolean>>;
   setClickedMethod: Dispatch<SetStateAction<AuthMethod | undefined>>;
   setLastUsedAuthMethod: (method: AuthMethod | undefined) => void;
 }>({
   authMethod: undefined,
   setAuthMethod: () => {},
   clickedMethod: undefined,
+  showPasswordField: false,
+  setShowPasswordField: () => {},
   setClickedMethod: () => {},
   setLastUsedAuthMethod: () => {},
 });
@@ -54,6 +62,7 @@ export default function LoginForm({
   next?: string;
 }) {
   const searchParams = useSearchParams();
+  const [showPasswordField, setShowPasswordField] = useState(false);
   const [clickedMethod, setClickedMethod] = useState<AuthMethod | undefined>(
     undefined,
   );
@@ -104,6 +113,7 @@ export default function LoginForm({
   );
 
   const AuthMethodComponent = currentAuthProvider?.component;
+  const showEmailPasswordOnly = authMethod === "resend" && showPasswordField;
 
   return (
     <LoginFormContext.Provider
@@ -113,6 +123,8 @@ export default function LoginForm({
         clickedMethod,
         setClickedMethod,
         setLastUsedAuthMethod,
+        showPasswordField,
+        setShowPasswordField,
       }}
     >
       <div className="flex flex-col gap-3">
@@ -124,18 +136,19 @@ export default function LoginForm({
                   <AuthMethodComponent {...currentAuthProvider?.props} />
                 )}
 
-                {authMethod === lastUsedAuthMethod && (
-                  <div className="text-center text-xs">
-                    <span className="text-neutral-500">
-                      You signed in with{" "}
-                      {lastUsedAuthMethod === "resend"
-                        ? "Email "
-                        : lastUsedAuthMethod.charAt(0).toUpperCase() +
-                          lastUsedAuthMethod.slice(1)}
-                      last time
-                    </span>
-                  </div>
-                )}
+                {!showEmailPasswordOnly &&
+                  authMethod === lastUsedAuthMethod && (
+                    <div className="text-center text-xs">
+                      <span className="text-neutral-500">
+                        You signed in with{" "}
+                        {lastUsedAuthMethod === "resend"
+                          ? "Email "
+                          : lastUsedAuthMethod.charAt(0).toUpperCase() +
+                            lastUsedAuthMethod.slice(1)}
+                        last time
+                      </span>
+                    </div>
+                  )}
                 <div className="my-2 flex flex-shrink items-center justify-center gap-2">
                   <div className="grow basis-0 border-b border-neutral-300" />
                   <span className="text-xs leading-none font-normal text-neutral-500 uppercase">
@@ -146,17 +159,29 @@ export default function LoginForm({
               </div>
             )}
 
-            {authProviders
-              .filter(
-                (provider) =>
-                  provider.method !== authMethod &&
-                  methods.includes(provider.method),
-              )
-              .map((provider) => (
-                <div key={provider.method}>
-                  <provider.component />
-                </div>
-              ))}
+            {showEmailPasswordOnly ? (
+              <div className="mt-2">
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowPasswordField(false)}
+                  className="w-full"
+                >
+                  Continue with another method
+                </Button>
+              </div>
+            ) : (
+              authProviders
+                .filter(
+                  (provider) =>
+                    provider.method !== authMethod &&
+                    methods.includes(provider.method),
+                )
+                .map((provider) => (
+                  <div key={provider.method}>
+                    <provider.component />
+                  </div>
+                ))
+            )}
           </div>
         </AnimatedSizeContainer>
       </div>
