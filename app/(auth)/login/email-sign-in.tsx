@@ -2,12 +2,12 @@
 
 import { useMediaQuery } from "@/components/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { checkAccountExistsAction } from "@/lib/actions/check-account-exists";
-import { cn } from "@/lib/utils";
-import { Loader2, Mail } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useAction } from "next-safe-action/hooks";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useState } from "react";
 import { toast } from "sonner";
 import { errorCodes, LoginFormContext } from "./login-form";
@@ -16,7 +16,9 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
   const searchParams = useSearchParams();
   const finalNext = next ?? searchParams?.get("next");
   const { isMobile } = useMediaQuery();
+  const router = useRouter();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const {
     setClickedMethod,
@@ -24,6 +26,8 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
     setAuthMethod,
     clickedMethod,
     setLastUsedAuthMethod,
+    showPasswordField,
+    setShowPasswordField,
   } = useContext(LoginFormContext);
 
   const { executeAsync, isPending } = useAction(checkAccountExistsAction, {
@@ -36,6 +40,28 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
     <form
       onSubmit={async (e) => {
         e.preventDefault();
+
+        if (!showPasswordField) {
+          const result = await executeAsync({ email });
+
+          if (!result?.data) {
+            return;
+          }
+
+          const { accountExists, hasPassword } = result.data;
+
+          if (accountExists && hasPassword) {
+            setShowPasswordField(true);
+            return;
+          }
+
+          if (!accountExists) {
+            setClickedMethod(undefined);
+            toast.error("No account found with that email address.");
+            return;
+          }
+        }
+
         setClickedMethod("resend");
 
         const result = await executeAsync({ email });
@@ -44,7 +70,7 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
           return;
         }
 
-        const { accountExists } = result.data;
+        const { accountExists, hasPassword } = result.data;
 
         if (!accountExists) {
           setClickedMethod(undefined);
@@ -52,12 +78,13 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
           return;
         }
 
-        const provider = "resend";
+        const provider = password && hasPassword ? "credentials" : "resend";
 
         const response = await signIn(provider, {
           email,
           redirect: false,
           callbackUrl: finalNext || "/",
+          ...(password && { password }),
         });
 
         if (!response) {
@@ -75,6 +102,8 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
           return;
         }
 
+        // same as "credentials" if password is provided
+        // this is only needed to show the correct last used auth method in the UI
         setLastUsedAuthMethod("resend");
 
         if (provider === "resend") {
@@ -83,32 +112,45 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
           setClickedMethod(undefined);
           return;
         }
+
+        if (provider === "credentials") {
+          toast.success("Logged in!");
+          setEmail("");
+          setPassword("");
+          router.push(response?.url || finalNext || "/");
+          return;
+        }
       }}
       className="flex flex-col gap-y-3"
     >
       {authMethod === "resend" && (
-        <input
+        <Input
           id="email"
           name="email"
-          autoFocus={!isMobile}
+          autoFocus={!isMobile && !showPasswordField}
           type="email"
-          placeholder="panic@thedis.co"
+          placeholder="john@doe.com"
           autoComplete="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className={isPending ? "pr-10" : undefined}
           size={1}
-          className={cn(
-            "block w-full min-w-0 appearance-none rounded-md border border-neutral-300 px-3 py-2 placeholder-neutral-400 shadow-sm focus:border-black focus:ring-black focus:outline-none sm:text-sm",
-            {
-              "pr-10": isPending,
-            },
-          )}
+        />
+      )}
+
+      {showPasswordField && (
+        <Input
+          type="password"
+          autoFocus={!isMobile}
+          value={password}
+          placeholder="Password (optional)"
+          onChange={(e) => setPassword(e.target.value)}
         />
       )}
 
       <Button
-        variant="outline"
+        className="w-full"
         {...(authMethod !== "resend" && {
           type: "button",
           onClick: (e) => {
@@ -118,12 +160,10 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
         })}
         disabled={clickedMethod && clickedMethod !== "resend"}
       >
-        {clickedMethod === "resend" || isPending ? (
+        {(clickedMethod === "resend" || isPending) && (
           <Loader2 className="size-4 animate-spin" />
-        ) : (
-          <Mail className="size-4 text-neutral-600" />
         )}
-        Continue with Email
+        Login with {password ? "password" : "email"}
       </Button>
     </form>
   );
