@@ -144,7 +144,8 @@ export default function LoginForm({
                         {lastUsedAuthMethod === "resend"
                           ? "Email "
                           : lastUsedAuthMethod.charAt(0).toUpperCase() +
-                            lastUsedAuthMethod.slice(1)}
+                            lastUsedAuthMethod.slice(1) +
+                            " "}
                         last time
                       </span>
                     </div>
