@@ -23,8 +23,8 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.redirect(
       new URL(
         `/login${path === "/" ? "" : `?next=${encodeURIComponent(fullPath)}`}`,
-        req.url
-      )
+        req.url,
+      ),
     );
   } else if (user) {
     if (["/login", "/signup"].includes(path)) {

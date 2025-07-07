@@ -1,5 +1,4 @@
-"use client";
-
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,10 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { signIn } from "next-auth/react";
-import { Google } from "@/components/icons";
 import Link from "next/link";
+import LoginForm from "./login-form";
 
 export default function LoginPage() {
   return (
@@ -18,20 +15,15 @@ export default function LoginPage() {
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Welcome back</CardTitle>
-          <CardDescription>Login with your Google account</CardDescription>
+          <CardDescription>
+            Login to your {process.env.NEXT_PUBLIC_APP_NAME} account
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => signIn("google")}
-          >
-            <Google />
-            Login with Google
-          </Button>
+          <LoginForm />
         </CardContent>
       </Card>
-      <p className="text-sm text-muted-foreground">
+      <p className="text-muted-foreground text-sm">
         Don&apos;t have an account?{" "}
         <Button variant="link" className="p-0 font-medium" asChild>
           <Link href="/signup">Signup</Link>

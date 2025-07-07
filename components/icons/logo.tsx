@@ -6,7 +6,7 @@ export function Logo({ className }: { className?: string }) {
       viewBox="0 0 149 149"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("w-7 h-7", className)}
+      className={cn("h-7 w-7", className)}
     >
       <rect width="149" height="149" rx="30" fill="url(#paint0_linear_40_8)" />
       <path
