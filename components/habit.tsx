@@ -10,7 +10,6 @@ import {
 import { cn } from "@/lib/utils";
 import {
   addDays,
-  addYears,
   differenceInDays,
   eachDayOfInterval,
   endOfWeek,
@@ -19,17 +18,15 @@ import {
   isBefore,
   isToday,
   startOfWeek,
+  subYears,
 } from "date-fns";
-import { LucideProps } from "lucide-react";
-import React from "react";
+import { icons } from "lucide-react";
 
 export interface HabitProps {
   className?: string;
-  icon: React.ForwardRefExoticComponent<
-    Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
-  >;
-  title: string;
-  description: string;
+  icon: string;
+  name: string;
+  description: string | null;
   startDate: Date;
   color: "green" | "red" | "yellow" | "blue" | "purple" | "orange" | "pink";
 }
@@ -239,8 +236,8 @@ export const getColor: Record<HabitProps["color"], ColorScheme> = {
 
 export function Habit({
   className,
-  icon: Icon,
-  title,
+  icon,
+  name,
   description,
   startDate,
   color,
@@ -249,15 +246,15 @@ export function Habit({
 
   let days: Date[] = [];
 
-  days = Array.from(
-    { length: differenceInDays(addYears(startDate, 1), startDate) + 1 },
-    (_, i) => {
-      const date = new Date(startDate);
-      date.setDate(date.getDate() + i);
+  const dates = eachDayOfInterval({
+    start: subYears(startDate, 1),
+    end: startDate,
+  });
 
-      return date;
-    },
-  );
+  days = Array.from({ length: dates.length }, (_, i) => {
+    const date = dates[i];
+    return date;
+  });
 
   // // if the current day is after the last day, add the needed days to the days array
   if (isAfter(new Date(), days[days.length - 1])) {
@@ -284,6 +281,8 @@ export function Habit({
       week = Array(7).fill(null);
     }
   });
+
+  const Icon = icons[icon as keyof typeof icons];
 
   const daysOfWeek = eachDayOfInterval({
     start: startOfWeek(startDate),
@@ -312,10 +311,10 @@ export function Habit({
         </div>
         <div className="flex-1">
           <CardTitle className="text-xl font-medium text-white">
-            {title}
+            {name}
           </CardTitle>
           <CardDescription
-            className="text-base"
+            className="text-base leading-tight"
             style={{
               color: getColor[color][theme].text,
             }}

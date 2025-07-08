@@ -13,6 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { mutate } from "swr";
 
 export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
   const [showModal, setShowModal] = useState(false);
@@ -49,9 +51,10 @@ export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
         throw new Error("Failed to create habit");
       }
 
-      const responseData = await response.json();
-
-      console.log(responseData);
+      form.reset();
+      mutate("/api/habits");
+      toast.success("Habit created successfully");
+      setShowModal(false);
     } catch (error) {
       console.error(error);
     }
