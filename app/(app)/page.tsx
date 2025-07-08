@@ -56,15 +56,22 @@ const habits: HabitProps[] = [
     color: "yellow",
   },
 ];
+
 export default function Home() {
-  return (
+  return !!habits.length ? (
     <>
-      <AddHabit />
+      <AddHabit inHeader />
       <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
         {habits.map((habit, idx) => (
           <Habit key={`habit-${idx}`} {...habit} />
         ))}
       </div>
     </>
+  ) : (
+    <div className="flex flex-col items-center justify-center gap-4">
+      <p>No habits found</p>
+      <p>Add a habit to get started</p>
+      <AddHabit />
+    </div>
   );
 }

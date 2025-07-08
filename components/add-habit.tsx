@@ -1,41 +1,79 @@
 "use client";
 
-import { getColor } from "@/components/habit";
+import { getColor, HabitProps } from "@/components/habit";
 import IconPickerDrawer from "@/components/icon-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Modal from "@/components/ui/modal";
 import { cn } from "@/lib/utils";
+import z from "@/lib/zod";
+import { createHabitBodySchema } from "@/lib/zod/schema/habits";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PlusIcon } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-export default function AddHabit() {
+export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
   const [showModal, setShowModal] = useState(false);
   const theme = "dark"; // TODO: Add theme selector
 
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    icon: "Sparkles",
-    color: "blue",
+  const form = useForm<z.infer<typeof createHabitBodySchema>>({
+    resolver: zodResolver(createHabitBodySchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      icon: "Sparkles",
+      color: "blue",
+      startDate: new Date().toISOString(),
+    },
   });
 
-  const handleIconSelect = (iconName: string) => {
-    setFormData((prev) => ({ ...prev, icon: iconName }));
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
+
+  const onSubmit = async (data: z.infer<typeof createHabitBodySchema>) => {
+    try {
+      const response = await fetch("/api/habits", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create habit");
+      }
+
+      const responseData = await response.json();
+
+      console.log(responseData);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = () => {
-    // TODO: Implement habit creation logic
-    console.log("Creating habit:", formData);
-  };
+  const ButtonComponent = inHeader ? (
+    <div className="mb-4 flex justify-end">
+      <Button onClick={() => setShowModal(true)}>
+        <PlusIcon className="size-4" />
+        Add Habit
+      </Button>
+    </div>
+  ) : (
+    <Button onClick={() => setShowModal(true)}>
+      <PlusIcon className="size-4" />
+      Add Habit
+    </Button>
+  );
 
   return (
     <>
-      <Button onClick={() => setShowModal(true)}>Add Habit</Button>
+      {ButtonComponent}
       <Modal
         showModal={showModal}
         setShowModal={setShowModal}
@@ -43,7 +81,7 @@ export default function AddHabit() {
         description="Add a new habit to your daily routine."
         footer={{
           onSubmit: {
-            action: handleSubmit,
+            action: handleSubmit(onSubmit),
             text: "Add Habit",
           },
           onCancel: {
@@ -53,8 +91,8 @@ export default function AddHabit() {
       >
         <div className="flex flex-col items-center gap-4 py-4">
           <IconPickerDrawer
-            selectedIcon={formData.icon}
-            onIconSelect={handleIconSelect}
+            selectedIcon={form.watch("icon")}
+            onIconSelect={(icon) => form.setValue("icon", icon)}
           />
         </div>
 
@@ -62,18 +100,18 @@ export default function AddHabit() {
           <div className="flex flex-col gap-2">
             <Label>Name</Label>
             <Input
+              {...register("name")}
               className="max-w-full"
-              value={formData.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
+              error={errors.name?.message}
             />
           </div>
 
           <div className="flex flex-col gap-2">
             <Label>Description</Label>
             <Input
+              {...register("description")}
               className="max-w-full"
-              value={formData.description}
-              onChange={(e) => handleInputChange("description", e.target.value)}
+              error={errors.description?.message}
             />
           </div>
 
@@ -93,14 +131,20 @@ export default function AddHabit() {
                   key={color}
                   variant="outline"
                   className={cn("h-10 flex-1 border-2")}
-                  onClick={() => handleInputChange("color", color)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      form.setValue("color", color as HabitProps["color"]);
+                    }
+                  }}
+                  onClick={() =>
+                    form.setValue("color", color as HabitProps["color"])
+                  }
                   style={{
                     backgroundColor:
-                      getColor[color as keyof typeof getColor][theme].log.done,
+                      getColor[color as HabitProps["color"]][theme].log.done,
                     borderColor:
-                      formData.color !== color
-                        ? getColor[color as keyof typeof getColor][theme].log
-                            .done
+                      form.watch("color") !== color
+                        ? getColor[color as HabitProps["color"]][theme].log.done
                         : "var(--accent-foreground)",
                   }}
                 />
