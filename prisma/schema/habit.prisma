@@ -1,7 +1,9 @@
 model Habit {
   id          String   @id @default(uuid())
   name        String
-  description String
+  description String?
+  icon        String
+  color       String
   startDate   DateTime
 
   userId String
