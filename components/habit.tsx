@@ -307,7 +307,7 @@ export function Habit({
             backgroundColor: getColor[color][theme].icon.background,
           }}
         >
-          <Icon className="size-6 fill-white" />
+          <Icon className="size-6 text-white" />
         </div>
         <div className="flex-1">
           <CardTitle className="text-xl font-medium text-white">
