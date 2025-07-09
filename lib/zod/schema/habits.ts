@@ -15,3 +15,16 @@ export const createHabitBodySchema = z.object({
     .describe("The color of the habit"),
   icon: z.string(),
 });
+
+export const logHabitBodySchema = z.object({
+  habitId: z.string(),
+  date: z.string(),
+});
+
+export const getHabitLogsQuerySchema = z.object({
+  habitId: z.string(),
+});
+
+export const deleteHabitLogBodySchema = z.object({
+  id: z.string(),
+});

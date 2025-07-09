@@ -41,6 +41,16 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --animate-elastic-spin: elastic-spin 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  @keyframes elastic-spin {
+    0% { transform: rotate(0deg); }
+    50% { scale: 0.7; }
+    98% { transform: rotate(-370deg); scale: 1.2; }
+    99% { transform: rotate(-350deg); scale: 1.2; }
+    100% { transform: rotate(-360deg); scale: 1; }
+  }
 }
 
 :root {
