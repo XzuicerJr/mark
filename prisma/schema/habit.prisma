@@ -6,6 +6,8 @@ model Habit {
   color       String
   startDate   DateTime
 
+  logs HabitLog[]
+
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -13,4 +15,18 @@ model Habit {
   updatedAt DateTime @updatedAt
 
   @@index([userId])
+}
+
+model HabitLog {
+  id   String   @id @default(uuid())
+  date DateTime
+
+  habitId String
+  habit   Habit  @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([habitId, date])
+  @@index([habitId])
 }

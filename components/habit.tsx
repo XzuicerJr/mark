@@ -2,12 +2,15 @@
 
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import useHabitLogs from "@/lib/swr/use-habit-logs";
 import { cn } from "@/lib/utils";
+import { HabitLog } from "@prisma/client";
 import {
   addDays,
   differenceInDays,
@@ -15,21 +18,13 @@ import {
   endOfWeek,
   format,
   isAfter,
-  isBefore,
+  isSameDay,
   isToday,
   startOfWeek,
   subYears,
 } from "date-fns";
 import { icons } from "lucide-react";
-
-export interface HabitProps {
-  className?: string;
-  icon: string;
-  name: string;
-  description: string | null;
-  startDate: Date;
-  color: "green" | "red" | "yellow" | "blue" | "purple" | "orange" | "pink";
-}
+import LogHabit from "./log-habit";
 
 interface Color {
   card: string; // background color of the card
@@ -234,7 +229,18 @@ export const getColor: Record<HabitProps["color"], ColorScheme> = {
   },
 };
 
+export interface HabitProps {
+  id: string;
+  className?: string;
+  icon: string;
+  name: string;
+  description: string | null;
+  startDate: Date;
+  color: "green" | "red" | "yellow" | "blue" | "purple" | "orange" | "pink";
+}
+
 export function Habit({
+  id,
   className,
   icon,
   name,
@@ -242,6 +248,7 @@ export function Habit({
   startDate,
   color,
 }: HabitProps) {
+  const { logs, isValidating } = useHabitLogs(id);
   const theme = "dark"; // TODO: Add theme selector
 
   let days: Date[] = [];
@@ -322,6 +329,9 @@ export function Habit({
             {description}
           </CardDescription>
         </div>
+        <CardAction>
+          <LogHabit habitId={id} color={color} logs={logs || []} />
+        </CardAction>
       </CardHeader>
       <CardContent className="p-1.5 pt-0">
         {isAfter(startDate, new Date()) ? (
@@ -350,24 +360,15 @@ export function Habit({
                   <tr key={`${weekday.short}-${rowIdx}`}>
                     {weeks.map((week, colIdx) => {
                       const date = week[rowIdx];
-                      const isDone =
-                        Math.random() > 0.5 && isBefore(date, new Date());
 
                       return (
                         <td key={colIdx}>
                           {date && (
-                            <div
-                              title={format(date, "MMM d, yyyy")}
-                              data-date={format(date, "yyyy-MM-dd")}
-                              className={cn(
-                                "size-2.5 rounded-[3px]",
-                                isToday(date) && "border-1 border-white",
-                              )}
-                              style={{
-                                backgroundColor: isDone
-                                  ? getColor[color][theme].log.done
-                                  : getColor[color][theme].log.pending,
-                              }}
+                            <DateCell
+                              date={date}
+                              color={color}
+                              theme={theme}
+                              logs={logs || []}
                             />
                           )}
                         </td>
@@ -381,5 +382,35 @@ export function Habit({
         )}
       </CardContent>
     </Card>
+  );
+}
+
+function DateCell({
+  date,
+  color,
+  theme,
+  logs,
+}: {
+  date: Date;
+  color: HabitProps["color"];
+  theme: "light" | "dark";
+  logs: HabitLog[];
+}) {
+  const isChecked = logs.some((log) => isSameDay(log.date, date));
+
+  return (
+    <div
+      title={format(date, "MMM d, yyyy")}
+      data-date={format(date, "yyyy-MM-dd")}
+      className={cn(
+        "size-2.5 rounded-[3px]",
+        isToday(date) && "border-1 border-white",
+      )}
+      style={{
+        backgroundColor: isChecked
+          ? getColor[color][theme].log.done
+          : getColor[color][theme].log.pending,
+      }}
+    />
   );
 }
