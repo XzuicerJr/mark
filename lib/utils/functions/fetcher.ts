@@ -1,9 +1,9 @@
 interface SWRError extends Error {
-  info: any;
+  info: unknown;
   status: number;
 }
 
-export async function fetcher<JSON = any>(
+export async function fetcher<JSON = unknown>(
   input: RequestInfo,
   init?: RequestInit & { headers?: Record<string, string> },
 ): Promise<JSON> {

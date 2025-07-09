@@ -1,5 +1,5 @@
 export const getSearchParams = (url: string) => {
-  let params = {} as Record<string, string>;
+  const params = {} as Record<string, string>;
 
   new URL(url).searchParams.forEach(function (val, key) {
     params[key] = val;
@@ -9,12 +9,17 @@ export const getSearchParams = (url: string) => {
 };
 
 export const getSearchParamsWithArray = (url: string) => {
-  let params = {} as Record<string, string | string[]>;
+  const params = {} as Record<string, string | string[]>;
 
   new URL(url).searchParams.forEach(function (val, key) {
     if (key in params) {
       const param = params[key];
-      Array.isArray(param) ? param.push(val) : (params[key] = [param, val]);
+
+      if (Array.isArray(param)) {
+        param.push(val);
+      } else {
+        params[key] = [param, val];
+      }
     } else {
       params[key] = val;
     }
@@ -35,6 +40,7 @@ export const getParamsFromURL = (url: string) => {
     }
     return paramsObj;
   } catch (e) {
+    console.error("Error getting params from URL", e);
     return {};
   }
 };

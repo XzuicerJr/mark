@@ -27,16 +27,7 @@ export const httpStatusToErrorCode = Object.fromEntries(
   Object.entries(errorCodeToHttpStatus).map(([code, status]) => [status, code]),
 ) as Record<number, z.infer<typeof ErrorCode>>;
 
-const speakeasyErrorOverrides: Record<z.infer<typeof ErrorCode>, string> = {
-  bad_request: "BadRequest",
-  unauthorized: "Unauthorized",
-  forbidden: "Forbidden",
-  not_found: "NotFound",
-  conflict: "Conflict",
-  unprocessable_entity: "UnprocessableEntity",
-  internal_server_error: "InternalServerError",
-};
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ErrorSchema = z.object({
   error: z.object({
     code: ErrorCode,
@@ -89,7 +80,10 @@ export function fromZodError(error: ZodError): ErrorResponse {
   };
 }
 
-export function handleApiError(error: any): ErrorResponse & { status: number } {
+export function handleApiError(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any,
+): ErrorResponse & { status: number } {
   console.error("API error occurred", error.message);
 
   // Zod errors
