@@ -10,13 +10,16 @@ import { cn } from "@/lib/utils";
 import z from "@/lib/zod";
 import { createHabitBodySchema } from "@/lib/zod/schema/habits";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusIcon } from "lucide-react";
+import { format } from "date-fns";
+import { ChevronDownIcon, PlusIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { mutate } from "swr";
 import { getColor } from "./get-color";
+import { Calendar } from "./ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
   const [showModal, setShowModal] = useState(false);
@@ -119,6 +122,40 @@ export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
               className="max-w-full"
               error={errors.description?.message}
             />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label>Start Date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="plain"
+                  className="focus:border-foreground focus:ring-foreground cursor-pointer justify-between border border-neutral-300 font-normal"
+                >
+                  {form.watch("startDate")
+                    ? format(form.watch("startDate"), "MMM d, yyyy")
+                    : "Select date"}
+                  <ChevronDownIcon />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-auto overflow-hidden p-0"
+                align="start"
+              >
+                <Calendar
+                  mode="single"
+                  captionLayout="dropdown"
+                  selected={
+                    form.watch("startDate")
+                      ? new Date(form.watch("startDate"))
+                      : undefined
+                  }
+                  onSelect={(date) =>
+                    form.setValue("startDate", date?.toISOString() ?? "")
+                  }
+                />
+              </PopoverContent>
+            </Popover>
           </div>
 
           <div className="flex flex-col gap-2">
