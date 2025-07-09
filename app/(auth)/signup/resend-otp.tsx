@@ -42,7 +42,7 @@ export const ResendOtp = ({ email }: { email: string }) => {
     <div className="relative mt-4 text-center text-sm text-neutral-500">
       {state === "default" && (
         <p className={cn(isPending && "opacity-80")}>
-          Didn't receive a code?{" "}
+          Didn&apos;t receive a code?{" "}
           <button
             onClick={() => executeAsync({ email })}
             className={cn(

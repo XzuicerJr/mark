@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
+import { ThemeSwitcher } from "./theme-switcher";
 
 export function NavUser({
   user,
@@ -62,6 +63,8 @@ export function NavUser({
             </div>
           </div>
         </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <ThemeSwitcher />
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>
           <LogOut />

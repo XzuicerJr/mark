@@ -1,14 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { HabitLogProps, HabitProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { HabitLog } from "@prisma/client";
 import { isSameDay } from "date-fns";
 import { Check, X } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { mutate } from "swr";
-import { getColor, HabitProps } from "./habit";
+import { getColor } from "./get-color";
 
 export default function LogHabit({
   habitId,
@@ -17,9 +18,10 @@ export default function LogHabit({
 }: {
   habitId: string;
   color: HabitProps["color"];
-  logs: HabitLog[];
+  logs: HabitLogProps[];
 }) {
-  const theme = "dark";
+  const { theme: themeFromProvider } = useTheme();
+  const theme = themeFromProvider as "light" | "dark";
 
   const [isPressed, setIsPressed] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -71,7 +73,7 @@ export default function LogHabit({
         style={{
           backgroundColor: isChecked
             ? getColor[color][theme].icon.background
-            : getColor[color][theme].card,
+            : getColor[color][theme].log.pending,
         }}
         onClick={() => {
           if (isAnimating) {

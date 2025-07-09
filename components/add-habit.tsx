@@ -1,24 +1,27 @@
 "use client";
 
-import { getColor, HabitProps } from "@/components/habit";
 import IconPickerDrawer from "@/components/icon-picker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Modal from "@/components/ui/modal";
+import { HabitProps } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import z from "@/lib/zod";
 import { createHabitBodySchema } from "@/lib/zod/schema/habits";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { mutate } from "swr";
+import { getColor } from "./get-color";
 
 export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
   const [showModal, setShowModal] = useState(false);
-  const theme = "dark"; // TODO: Add theme selector
+  const { theme: themeFromProvider } = useTheme();
+  const theme = themeFromProvider as "light" | "dark";
 
   const form = useForm<z.infer<typeof createHabitBodySchema>>({
     resolver: zodResolver(createHabitBodySchema),
@@ -62,7 +65,7 @@ export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
 
   const ButtonComponent = inHeader ? (
     <div className="mb-4 flex justify-end">
-      <Button onClick={() => setShowModal(true)}>
+      <Button variant="outline" onClick={() => setShowModal(true)}>
         <PlusIcon className="size-4" />
         Add Habit
       </Button>
