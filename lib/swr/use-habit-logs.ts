@@ -10,7 +10,7 @@ export default function useHabitLogs(
     data: logs,
     isValidating,
     error,
-  } = useSWR<HabitLog[]>(`/api/habits/${habitId}`, fetcher, {
+  } = useSWR<HabitLog[]>(`/api/habits/${habitId}/logs`, fetcher, {
     dedupingInterval: 20000,
     revalidateOnFocus: false,
     keepPreviousData: true,
