@@ -48,13 +48,13 @@ export default function LogHabit({
     : { date: new Date(), habitId };
 
   const handleLogHabit = async () => {
-    const response = await fetch(`/api/habits/${habitId}`, {
+    const response = await fetch(`/api/habits/${habitId}/logs`, {
       method,
       body: JSON.stringify(body),
     });
 
     if (response.ok) {
-      mutate(`/api/habits/${habitId}`);
+      mutate(`/api/habits/${habitId}/logs`);
     } else {
       toast.error("Failed to log habit");
     }

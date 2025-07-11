@@ -10,7 +10,7 @@ import {
 } from "@/lib/zod/schema/habits";
 import { NextResponse } from "next/server";
 
-// GET /api/habits/[id] – get logs for a habit
+// GET /api/habits/[id]/logs – get logs for a habit
 export const GET = withSession(async ({ session, params }) => {
   const { id } = params;
 
@@ -29,7 +29,7 @@ export const GET = withSession(async ({ session, params }) => {
   return NextResponse.json(response);
 });
 
-// POST /api/habits/[id] – log day for the habit
+// POST /api/habits/[id]/logs – log day for the habit
 export const POST = withSession(async ({ session, req }) => {
   const body = logHabitBodySchema.parse(await parseRequestBody(req));
 
@@ -49,7 +49,7 @@ export const POST = withSession(async ({ session, req }) => {
   }
 });
 
-// DELETE /api/habits/[id] – delete day for the habit
+// DELETE /api/habits/[id]/logs – delete day for the habit
 export const DELETE = withSession(async ({ session, params, req }) => {
   const { id } = params;
 
