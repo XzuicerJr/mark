@@ -25,18 +25,13 @@ import {
 } from "date-fns";
 import { icons } from "lucide-react";
 import { useTheme } from "next-themes";
+import AddEditHabit from "./add-edit-habit";
 import { getColor } from "./get-color";
 import LogHabit from "./log-habit";
 
-export function Habit({
-  id,
-  className,
-  icon,
-  name,
-  description,
-  startDate,
-  color,
-}: HabitProps & { className?: string }) {
+export function Habit(props: HabitProps & { className?: string }) {
+  const { id, className, icon, name, description, startDate, color } = props;
+
   const { logs } = useHabitLogs(id);
 
   const { theme: themeFromProvider } = useTheme();
@@ -120,11 +115,12 @@ export function Habit({
             {description}
           </CardDescription>
         </div>
-        {!isAfter(startDate, new Date()) && (
-          <CardAction>
+        <CardAction className="flex flex-row gap-2">
+          <AddEditHabit props={props} />
+          {!isAfter(startDate, new Date()) && (
             <LogHabit habitId={id} color={color} logs={logs || []} />
-          </CardAction>
-        )}
+          )}
+        </CardAction>
       </CardHeader>
       <CardContent className="p-1.5 pt-0">
         {isAfter(startDate, new Date()) ? (
