@@ -1,6 +1,6 @@
 "use client";
 
-import AddHabit from "@/components/add-habit";
+import AddHabit from "@/components/add-edit-habit";
 import { Habit } from "@/components/habit";
 import useHabits from "@/lib/swr/use-habits";
 

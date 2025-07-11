@@ -29,6 +29,10 @@ interface ModalProps {
   title?: string;
   description?: string;
   footer?: {
+    onDelete?: {
+      action: () => void;
+      text: string;
+    };
     onSubmit?: {
       action: () => void;
       text: string;
@@ -73,13 +77,23 @@ export default function Modal({
                   {footer.onSubmit.text}
                 </Button>
               )}
-              {footer.onCancel && (
-                <DrawerClose asChild>
-                  <Button variant="outline" onClick={footer.onCancel.action}>
-                    {footer.onCancel.text}
+              <div className="grid grid-cols-2 gap-2">
+                {footer.onDelete && (
+                  <Button
+                    variant="outline-destructive"
+                    onClick={footer.onDelete.action}
+                  >
+                    {footer.onDelete.text}
                   </Button>
-                </DrawerClose>
-              )}
+                )}
+                {footer.onCancel && (
+                  <DrawerClose asChild>
+                    <Button variant="outline" onClick={footer.onCancel.action}>
+                      {footer.onCancel.text}
+                    </Button>
+                  </DrawerClose>
+                )}
+              </div>
             </DrawerFooter>
           )}
         </DrawerContent>
@@ -100,18 +114,30 @@ export default function Modal({
         )}
         {children}
         {(footer?.onSubmit || footer?.onCancel) && (
-          <DialogFooter>
-            {footer.onSubmit && (
-              <Button onClick={footer.onSubmit.action}>
-                {footer.onSubmit.text}
+          <DialogFooter className="flex gap-2 sm:justify-between">
+            {footer.onDelete && (
+              <Button
+                variant="outline-destructive"
+                onClick={footer.onDelete.action}
+              >
+                {footer.onDelete.text}
               </Button>
             )}
-            {footer.onCancel && (
-              <DialogClose asChild>
-                <Button variant="outline" onClick={footer.onCancel.action}>
-                  {footer.onCancel.text}
-                </Button>
-              </DialogClose>
+            {(footer.onSubmit || footer.onCancel) && (
+              <div className="flex items-center gap-2">
+                {footer.onSubmit && (
+                  <Button onClick={footer.onSubmit.action}>
+                    {footer.onSubmit.text}
+                  </Button>
+                )}
+                {footer.onCancel && (
+                  <DialogClose asChild>
+                    <Button variant="outline" onClick={footer.onCancel.action}>
+                      {footer.onCancel.text}
+                    </Button>
+                  </DialogClose>
+                )}
+              </div>
             )}
           </DialogFooter>
         )}

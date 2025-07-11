@@ -16,6 +16,8 @@ export const createHabitBodySchema = z.object({
   icon: z.string(),
 });
 
+export const updateHabitBodySchema = createHabitBodySchema.partial();
+
 export const logHabitBodySchema = z.object({
   habitId: z.string(),
   date: z.string(),

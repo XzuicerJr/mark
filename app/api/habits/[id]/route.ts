@@ -1,17 +1,13 @@
 import { ApiError } from "@/lib/api/errors";
-import { deleteHabitLog } from "@/lib/api/habits/logs/detele-habit-log";
-import { getHabitLogs } from "@/lib/api/habits/logs/get-habit-logs";
-import { logHabit } from "@/lib/api/habits/logs/log-habit";
+import { deleteHabit } from "@/lib/api/habits/delete-habit";
+import { updateHabit } from "@/lib/api/habits/update-habit";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withSession } from "@/lib/auth/session";
-import {
-  deleteHabitLogBodySchema,
-  logHabitBodySchema,
-} from "@/lib/zod/schema/habits";
+import { updateHabitBodySchema } from "@/lib/zod/schema/habits";
 import { NextResponse } from "next/server";
 
-// GET /api/habits/[id] – get logs for a habit
-export const GET = withSession(async ({ session, params }) => {
+// PATCH /api/habits/[id] – update habit
+export const PATCH = withSession(async ({ session, req, params }) => {
   const { id } = params;
 
   if (!id) {
@@ -21,22 +17,13 @@ export const GET = withSession(async ({ session, params }) => {
     });
   }
 
-  const response = await getHabitLogs({
-    habitId: id,
-    userId: session.user.id,
-  });
-
-  return NextResponse.json(response);
-});
-
-// POST /api/habits/[id] – log day for the habit
-export const POST = withSession(async ({ session, req }) => {
-  const body = logHabitBodySchema.parse(await parseRequestBody(req));
+  const body = updateHabitBodySchema.parse(await parseRequestBody(req));
 
   try {
-    const response = await logHabit({
-      ...body,
+    const response = await updateHabit({
       userId: session.user.id,
+      habitId: id,
+      ...body,
     });
 
     return NextResponse.json(response);
@@ -49,8 +36,8 @@ export const POST = withSession(async ({ session, req }) => {
   }
 });
 
-// DELETE /api/habits/[id] – delete day for the habit
-export const DELETE = withSession(async ({ session, params, req }) => {
+// DELETE /api/habits/[id] – delete habit
+export const DELETE = withSession(async ({ session, params }) => {
   const { id } = params;
 
   if (!id) {
@@ -60,10 +47,7 @@ export const DELETE = withSession(async ({ session, params, req }) => {
     });
   }
 
-  const body = deleteHabitLogBodySchema.parse(await parseRequestBody(req));
-
-  const response = await deleteHabitLog({
-    id: body.id,
+  const response = await deleteHabit({
     habitId: id,
     userId: session.user.id,
   });

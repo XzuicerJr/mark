@@ -63,7 +63,7 @@ export default function LogHabit({
   return (
     <div className="relative">
       <Button
-        variant="outline"
+        variant="plain"
         size="icon"
         className="hover:border-accent-foreground relative size-12 cursor-pointer rounded-xl border"
         onMouseEnter={() => setIsHovered(true)}

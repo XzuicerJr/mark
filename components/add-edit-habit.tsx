@@ -11,9 +11,9 @@ import z from "@/lib/zod";
 import { createHabitBodySchema } from "@/lib/zod/schema/habits";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { ChevronDownIcon, PlusIcon } from "lucide-react";
+import { ChevronDownIcon, PencilLine, PlusIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { mutate } from "swr";
@@ -21,20 +21,31 @@ import { getColor } from "./get-color";
 import { Calendar } from "./ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
-export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
+export default function AddEditHabit({
+  inHeader = false,
+  props,
+}: {
+  inHeader?: boolean;
+  props?: HabitProps;
+}) {
   const [showModal, setShowModal] = useState(false);
   const { theme: themeFromProvider } = useTheme();
   const theme = themeFromProvider as "light" | "dark";
 
   const form = useForm<z.infer<typeof createHabitBodySchema>>({
     resolver: zodResolver(createHabitBodySchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      icon: "Sparkles",
-      color: "blue",
-      startDate: new Date().toISOString(),
-    },
+    defaultValues: props
+      ? {
+          ...props,
+          startDate: new Date(props.startDate).toISOString(),
+        }
+      : {
+          name: "",
+          description: "",
+          icon: "Sparkles",
+          color: "blue",
+          startDate: new Date().toISOString(),
+        },
   });
 
   const {
@@ -43,14 +54,33 @@ export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
     formState: { errors },
   } = form;
 
+  const endpoint = useMemo(
+    () =>
+      props
+        ? {
+            method: "PATCH",
+            url: `/api/habits/${props.id}`,
+            successMessage: "Habit updated successfully",
+          }
+        : {
+            method: "POST",
+            url: `/api/habits`,
+            successMessage: "Habit created successfully",
+          },
+    [props],
+  );
+
   const onSubmit = async (data: z.infer<typeof createHabitBodySchema>) => {
     try {
-      const response = await fetch("/api/habits", {
-        method: "POST",
+      const response = await fetch(endpoint.url, {
+        method: endpoint.method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          ...(props?.id && { habitId: props.id }),
+        }),
       });
 
       if (!response.ok) {
@@ -59,14 +89,41 @@ export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
 
       form.reset();
       mutate("/api/habits");
-      toast.success("Habit created successfully");
+      toast.success(endpoint.successMessage);
       setShowModal(false);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const ButtonComponent = inHeader ? (
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/habits/${props?.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete habit");
+      }
+
+      mutate("/api/habits");
+      toast.success("Habit deleted successfully");
+      setShowModal(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const ButtonComponent = props ? (
+    <Button
+      variant="plain"
+      size="icon"
+      className="hover:border-accent-foreground size-12 cursor-pointer rounded-xl border"
+      onClick={() => setShowModal(true)}
+    >
+      <PencilLine className="size-4" />
+    </Button>
+  ) : inHeader ? (
     <div className="mb-4 flex justify-end">
       <Button variant="outline" onClick={() => setShowModal(true)}>
         <PlusIcon className="size-4" />
@@ -86,12 +143,18 @@ export default function AddHabit({ inHeader = false }: { inHeader?: boolean }) {
       <Modal
         showModal={showModal}
         setShowModal={setShowModal}
-        title="New Habit"
-        description="Add a new habit to your daily routine."
+        title={props ? "Edit Habit" : "New Habit"}
+        description={
+          !props ? "Add a new habit to your daily routine." : undefined
+        }
         footer={{
+          onDelete: {
+            action: handleDelete,
+            text: "Delete",
+          },
           onSubmit: {
             action: handleSubmit(onSubmit),
-            text: "Add Habit",
+            text: props ? "Update Habit" : "Add Habit",
           },
           onCancel: {
             text: "Cancel",
