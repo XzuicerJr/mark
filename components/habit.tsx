@@ -120,9 +120,11 @@ export function Habit({
             {description}
           </CardDescription>
         </div>
-        <CardAction>
-          <LogHabit habitId={id} color={color} logs={logs || []} />
-        </CardAction>
+        {!isAfter(startDate, new Date()) && (
+          <CardAction>
+            <LogHabit habitId={id} color={color} logs={logs || []} />
+          </CardAction>
+        )}
       </CardHeader>
       <CardContent className="p-1.5 pt-0">
         {isAfter(startDate, new Date()) ? (
