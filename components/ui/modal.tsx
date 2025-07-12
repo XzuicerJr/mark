@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 import { Dispatch, SetStateAction } from "react";
+import ModalDelete from "../modal-delete";
 import { Button } from "./button";
 
 interface ModalProps {
@@ -31,17 +32,23 @@ interface ModalProps {
   footer?: {
     onDelete?: {
       action: () => void;
-      text: string;
+      modal: {
+        title: string;
+        description?: string;
+        content: React.ReactNode;
+      };
     };
     onSubmit?: {
       action: () => void;
       text: string;
+      variant?: "default" | "destructive";
     };
     onCancel?: {
       action?: () => void;
       text: string;
     };
   };
+  icon?: React.ReactNode;
   showModal?: boolean;
   setShowModal?: Dispatch<SetStateAction<boolean>>;
 }
@@ -52,6 +59,7 @@ export default function Modal({
   title,
   description,
   footer,
+  icon,
   showModal,
   setShowModal,
 }: ModalProps) {
@@ -60,31 +68,44 @@ export default function Modal({
   if (device === "mobile") {
     return (
       <Drawer modal open={showModal} onOpenChange={setShowModal}>
-        <DrawerContent className={className}>
-          {(title || description) && (
-            <DrawerHeader>
-              {title && <DrawerTitle>{title}</DrawerTitle>}
-              {description && (
-                <DrawerDescription>{description}</DrawerDescription>
+        <DrawerContent
+          className={className}
+          aria-describedby={description ?? "this is a drawer"}
+        >
+          {(icon || title || description) && (
+            <DrawerHeader className="flex-row items-center">
+              {icon && (
+                <div className="flex size-12 items-center justify-center">
+                  {icon}
+                </div>
               )}
+              <div className="flex flex-col items-start">
+                {title && <DrawerTitle>{title}</DrawerTitle>}
+                {description && (
+                  <DrawerDescription>{description}</DrawerDescription>
+                )}
+              </div>
             </DrawerHeader>
           )}
-          <div className="px-4">{children}</div>
+          <div className="space-y-4 px-4">{children}</div>
           {(footer?.onSubmit || footer?.onCancel) && (
             <DrawerFooter>
               {footer.onSubmit && (
-                <Button onClick={footer.onSubmit.action}>
+                <Button
+                  variant={footer.onSubmit.variant ?? "default"}
+                  onClick={footer.onSubmit.action}
+                >
                   {footer.onSubmit.text}
                 </Button>
               )}
               <div className="grid grid-cols-2 gap-2">
                 {footer.onDelete && (
-                  <Button
-                    variant="outline-destructive"
-                    onClick={footer.onDelete.action}
-                  >
-                    {footer.onDelete.text}
-                  </Button>
+                  <ModalDelete
+                    onDelete={footer.onDelete.action}
+                    title={footer.onDelete.modal.title}
+                    description={footer.onDelete.modal.description}
+                    content={footer.onDelete.modal.content}
+                  />
                 )}
                 {footer.onCancel && (
                   <DrawerClose asChild>
@@ -103,30 +124,43 @@ export default function Modal({
 
   return (
     <Dialog modal open={showModal} onOpenChange={setShowModal}>
-      <DialogContent className={cn(className, "mx-auto w-full max-w-lg")}>
-        {(title || description) && (
-          <DialogHeader>
-            {title && <DialogTitle>{title}</DialogTitle>}
-            {description && (
-              <DialogDescription>{description}</DialogDescription>
+      <DialogContent
+        className={cn("mx-auto w-full max-w-lg", className)}
+        aria-describedby={description ?? "this is a dialog"}
+      >
+        {(icon || title || description) && (
+          <DialogHeader className="flex-row items-center">
+            {icon && (
+              <div className="flex size-12 items-center justify-center">
+                {icon}
+              </div>
             )}
+            <div>
+              {title && <DialogTitle>{title}</DialogTitle>}
+              {description && (
+                <DialogDescription>{description}</DialogDescription>
+              )}
+            </div>
           </DialogHeader>
         )}
         {children}
         {(footer?.onSubmit || footer?.onCancel) && (
           <DialogFooter className="flex gap-2 sm:justify-between">
             {footer.onDelete && (
-              <Button
-                variant="outline-destructive"
-                onClick={footer.onDelete.action}
-              >
-                {footer.onDelete.text}
-              </Button>
+              <ModalDelete
+                onDelete={footer.onDelete.action}
+                title={footer.onDelete.modal.title}
+                description={footer.onDelete.modal.description}
+                content={footer.onDelete.modal.content}
+              />
             )}
             {(footer.onSubmit || footer.onCancel) && (
               <div className="flex items-center gap-2">
                 {footer.onSubmit && (
-                  <Button onClick={footer.onSubmit.action}>
+                  <Button
+                    variant={footer.onSubmit.variant ?? "default"}
+                    onClick={footer.onSubmit.action}
+                  >
                     {footer.onSubmit.text}
                   </Button>
                 )}

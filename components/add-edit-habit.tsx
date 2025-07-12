@@ -116,9 +116,9 @@ export default function AddEditHabit({
 
   const ButtonComponent = props ? (
     <Button
-      variant="plain"
+      variant="outline"
       size="icon"
-      className="hover:border-accent-foreground size-12 cursor-pointer rounded-xl border"
+      className={inHeader ? "size-12 rounded-xl" : ""}
       onClick={() => setShowModal(true)}
     >
       <PencilLine className="size-4" />
@@ -150,7 +150,15 @@ export default function AddEditHabit({
         footer={{
           onDelete: {
             action: handleDelete,
-            text: "Delete",
+            modal: {
+              title: "Delete Habit",
+              content: (
+                <p className="text-sm">
+                  Are you sure you want to delete this habit? This action cannot
+                  be undone.
+                </p>
+              ),
+            },
           },
           onSubmit: {
             action: handleSubmit(onSubmit),

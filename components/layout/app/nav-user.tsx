@@ -28,7 +28,9 @@ export function NavUser({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="hover:bg-accent-foreground/10">
-          <span className="truncate font-medium">{user.name}</span>
+          <span className="hidden truncate font-medium sm:block">
+            {user.name}
+          </span>
           {user.avatar ? (
             <div className="bg-muted flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg">
               <Image src={user.avatar} alt={user.name} width={32} height={32} />
