@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+    <a href="https://mark.zamora.dev" target="_blank">
+        Website
+    </a>
+    <span>&nbsp;❖&nbsp;</span>
+    <a href="https://github.com/XzuicerJr/habit-tracker?tab=readme-ov-file#-stack">
+        Stack
+    </a>
+    <span>&nbsp;❖&nbsp;</span>
+    <a href="https://github.com/XzuicerJr/habit-tracker?tab=readme-ov-file#-contributing">
+        Contribute
+    </a>
+    <span>&nbsp;❖&nbsp;</span>
+    <a href="https://zamora.dev/tw">
+        X
+    </a>
+    <span>&nbsp;❖&nbsp;</span>
+    <a href="https://github.com/XzuicerJr/habit-tracker?tab=readme-ov-file#-license">
+        License
+    </a>
+</div>
 
-## Getting Started
+</p>
 
-First, run the development server:
+<div align="center">
+
+![Next.js Badge](https://img.shields.io/badge/Next.js-000?logo=next.js&logoColor=fff&style=flat)
+![Vercel Badge](https://img.shields.io/badge/Vercel-000?logo=vercel&logoColor=fff&style=flat)
+![Prisma Badge](https://img.shields.io/badge/Prisma-000?logo=prisma&logoColor=fff&style=flat)
+![Railway Badge](https://img.shields.io/badge/Railway-000?logo=railway&logoColor=fff&style=flat)
+![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=fff&style=flat)
+![GitHub stars](https://img.shields.io/github/stars/XzuicerJr/habit-tracker)
+![GitHub issues](https://img.shields.io/github/issues/XzuicerJr/habit-tracker)
+![GitHub forks](https://img.shields.io/github/forks/XzuicerJr/habit-tracker)
+![GitHub PRs](https://img.shields.io/github/issues-pr/XzuicerJr/habit-tracker)
+</div>
+
+
+## 📦 Stack
+
+- [**Next.js**](https://nextjs.org/) - The React Framework for the Web.
+- [**Typescript**](https://www.typescriptlang.org/) - JavaScript with syntax for types.
+- [**Prisma**](https://www.prisma.io/) - Next-generation Node.js and TypeScript ORM.
+- [**Railway**](https://railway.app/) - The developer platform for cloud infrastructure.
+- [**Tailwindcss**](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom designs.
+- [**shadcn/ui**](https://ui.shadcn.com/) - Beautifully designed components built with Radix UI and Tailwind CSS.
+- [**clsx**](https://github.com/lukeed/clsx) + [**tailwind-variants**](https://www.tailwind-variants.org/) - The power of Tailwind combined with a first-class variant API.
+- [**Prettier**](https://prettier.io/) + [prettier-plugin-tailwindcss](https://github.com/tailwindlabs/prettier-plugin-tailwindcss) - An opinionated code formatter.
+- [**Lucide Icons**](https://lucide.dev/)
+
+## 🚀 Contributing
+
+1. [Fork](https://github.com/XzuicerJr/habit-tracker/fork) the repository.
+
+2. Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Install pnpm globally if you don't have it:
+npm install -g pnpm
+
+# and install dependencies:
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Create a `.env`, use `.env.template` as a reference.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Run the development server:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm run dev
+```
 
-## Learn More
+Open up [http://localhost:3000](http://localhost:3000) and make your changes ✨.
 
-To learn more about Next.js, take a look at the following resources:
+## 📄 License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [**Apache-2.0 license**](https://github.com/XzuicerJr/zamora.dev?tab=Apache-2.0-1-ov-file#readme).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🤝 Thanks to [pheralb](https://github.com/pheralb)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Thanks to [pheralb](https://github.com/pheralb) for the original template. He has a great portfolio and blog, you should definitely check it out! [pheralb.dev](https://pheralb.dev)
