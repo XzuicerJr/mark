@@ -176,6 +176,7 @@ function DayComponent({
 
       mutate(`/api/habits/${habitId}/logs`);
     } catch (error) {
+      console.error(error);
       toast.error("Failed to log habit");
     }
   };

@@ -20,7 +20,7 @@ export const withSession =
   (handler: WithSessionHandler) =>
   async (
     req: Request,
-    { params = {} }: { params: Record<string, string> | undefined },
+    { params }: { params: Promise<Record<string, string>> },
   ) => {
     try {
       const session = await getSession();
@@ -33,8 +33,14 @@ export const withSession =
       }
 
       const searchParams = getSearchParams(req.url);
+      const awaitedParams = await params;
 
-      return await handler({ req, params, searchParams, session });
+      return await handler({
+        req,
+        searchParams,
+        session,
+        params: awaitedParams,
+      });
     } catch (error) {
       return handleAndReturnErrorResponse(error);
     }

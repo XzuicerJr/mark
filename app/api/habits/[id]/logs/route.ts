@@ -50,7 +50,7 @@ export const POST = withSession(async ({ session, req }) => {
 });
 
 // DELETE /api/habits/[id]/logs – delete day for the habit
-export const DELETE = withSession(async ({ session, params, req }) => {
+export const DELETE = withSession(async ({ session, req, params }) => {
   const { id } = params;
 
   if (!id) {
