@@ -3,11 +3,11 @@
         Website
     </a>
     <span>&nbsp;❖&nbsp;</span>
-    <a href="https://github.com/XzuicerJr/habit-tracker?tab=readme-ov-file#-stack">
+    <a href="https://github.com/XzuicerJr/mark?tab=readme-ov-file#-stack">
         Stack
     </a>
     <span>&nbsp;❖&nbsp;</span>
-    <a href="https://github.com/XzuicerJr/habit-tracker?tab=readme-ov-file#-contributing">
+    <a href="https://github.com/XzuicerJr/mark?tab=readme-ov-file#-contributing">
         Contribute
     </a>
     <span>&nbsp;❖&nbsp;</span>
@@ -15,7 +15,7 @@
         X
     </a>
     <span>&nbsp;❖&nbsp;</span>
-    <a href="https://github.com/XzuicerJr/habit-tracker?tab=readme-ov-file#-license">
+    <a href="https://github.com/XzuicerJr/mark?tab=readme-ov-file#-license">
         License
     </a>
 </div>
@@ -29,10 +29,10 @@
 ![Prisma Badge](https://img.shields.io/badge/Prisma-000?logo=prisma&logoColor=fff&style=flat)
 ![Railway Badge](https://img.shields.io/badge/Railway-000?logo=railway&logoColor=fff&style=flat)
 ![Tailwind CSS Badge](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=fff&style=flat)
-![GitHub stars](https://img.shields.io/github/stars/XzuicerJr/habit-tracker)
-![GitHub issues](https://img.shields.io/github/issues/XzuicerJr/habit-tracker)
-![GitHub forks](https://img.shields.io/github/forks/XzuicerJr/habit-tracker)
-![GitHub PRs](https://img.shields.io/github/issues-pr/XzuicerJr/habit-tracker)
+![GitHub stars](https://img.shields.io/github/stars/XzuicerJr/mark)
+![GitHub issues](https://img.shields.io/github/issues/XzuicerJr/mark)
+![GitHub forks](https://img.shields.io/github/forks/XzuicerJr/mark)
+![GitHub PRs](https://img.shields.io/github/issues-pr/XzuicerJr/mark)
 </div>
 
 
@@ -50,7 +50,7 @@
 
 ## 🚀 Contributing
 
-1. [Fork](https://github.com/XzuicerJr/habit-tracker/fork) the repository.
+1. [Fork](https://github.com/XzuicerJr/mark/fork) the repository.
 
 2. Install dependencies:
 
