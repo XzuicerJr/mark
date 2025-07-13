@@ -33,8 +33,8 @@
 ![GitHub issues](https://img.shields.io/github/issues/XzuicerJr/mark)
 ![GitHub forks](https://img.shields.io/github/forks/XzuicerJr/mark)
 ![GitHub PRs](https://img.shields.io/github/issues-pr/XzuicerJr/mark)
-</div>
 
+</div>
 
 ## 📦 Stack
 
@@ -75,7 +75,3 @@ Open up [http://localhost:3000](http://localhost:3000) and make your changes ✨
 ## 📄 License
 
 - [**Apache-2.0 license**](https://github.com/XzuicerJr/zamora.dev?tab=Apache-2.0-1-ov-file#readme).
-
-## 🤝 Thanks to [pheralb](https://github.com/pheralb)
-
-- Thanks to [pheralb](https://github.com/pheralb) for the original template. He has a great portfolio and blog, you should definitely check it out! [pheralb.dev](https://pheralb.dev)

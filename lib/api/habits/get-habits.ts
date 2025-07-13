@@ -8,6 +8,7 @@ export async function getHabits({
   const habits = await prisma.habit.findMany({
     where: {
       userId,
+      archived: false,
     },
     orderBy: {
       createdAt: "desc",
