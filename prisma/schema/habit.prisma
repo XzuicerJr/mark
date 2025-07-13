@@ -5,6 +5,7 @@ model Habit {
   icon        String
   color       String
   startDate   DateTime
+  archived    Boolean  @default(false)
 
   logs HabitLog[]
 
