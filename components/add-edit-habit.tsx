@@ -148,18 +148,20 @@ export default function AddEditHabit({
           !props ? "Add a new habit to your daily routine." : undefined
         }
         footer={{
-          onDelete: {
-            action: handleDelete,
-            modal: {
-              title: "Delete Habit",
-              content: (
-                <p className="text-sm">
-                  Are you sure you want to delete this habit? This action cannot
-                  be undone.
-                </p>
-              ),
+          ...(props && {
+            onDelete: {
+              action: handleDelete,
+              modal: {
+                title: "Delete Habit",
+                content: (
+                  <p className="text-sm">
+                    Are you sure you want to delete this habit? This action
+                    cannot be undone.
+                  </p>
+                ),
+              },
             },
-          },
+          }),
           onSubmit: {
             action: handleSubmit(onSubmit),
             text: props ? "Update Habit" : "Add Habit",

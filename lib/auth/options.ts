@@ -120,13 +120,12 @@ export const authOptions: NextAuthConfig = {
       },
     }),
   ],
+
   adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   cookies: {
     sessionToken: {
-      name: `${
-        VERCEL_DEPLOYMENT ? "__Secure-" : ""
-      }next-auth.mark.session-token`,
+      name: `${VERCEL_DEPLOYMENT ? "__Secure-" : ""}next-auth.session-token`,
       options: {
         httpOnly: true,
         sameSite: "lax",

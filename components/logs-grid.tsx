@@ -72,8 +72,11 @@ export default function LogsGrid({
   }));
 
   return (
-    <div className="overflow-x-hidden">
-      <table className="relative float-right w-full border-separate border-spacing-0.5">
+    <div dir="rtl" className="scrollbar-hidden overflow-x-auto">
+      <table
+        dir="ltr"
+        className="relative w-full border-separate border-spacing-0.5"
+      >
         <tbody>
           {daysOfWeek.map((weekday, rowIdx) => (
             <tr key={`${weekday.short}-${rowIdx}`}>
