@@ -98,7 +98,12 @@ export default function Modal({
                   {footer.onSubmit.text}
                 </Button>
               )}
-              <div className="grid grid-cols-2 gap-2">
+              <div
+                className={cn(
+                  "grid grid-cols-2 gap-2",
+                  !footer.onDelete && "grid-cols-1",
+                )}
+              >
                 {footer.onDelete && (
                   <ModalDelete
                     onDelete={footer.onDelete.action}
