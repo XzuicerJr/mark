@@ -14,6 +14,7 @@ export const createHabitBodySchema = z.object({
     .optional()
     .describe("The color of the habit"),
   icon: z.string(),
+  archived: z.boolean().default(false).optional(),
 });
 
 export const updateHabitBodySchema = createHabitBodySchema.partial();

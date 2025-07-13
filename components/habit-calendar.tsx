@@ -14,6 +14,7 @@ import { CalendarDay, Modifiers } from "react-day-picker";
 import { toast } from "sonner";
 import { mutate } from "swr";
 import AddEditHabit from "./add-edit-habit";
+import ArchiveHabit from "./archive-habit";
 import { getColor } from "./get-color";
 import LogsGrid from "./logs-grid";
 import ModalDelete from "./modal-delete";
@@ -91,6 +92,7 @@ export default function HabitCalendar({
               </p>
             }
           />
+          <ArchiveHabit habitId={habit.id} />
           <AddEditHabit props={habit} />
         </div>
         <div className="bg-border h-px w-full" />
