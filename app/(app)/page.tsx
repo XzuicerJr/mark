@@ -9,10 +9,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import useHabits from "@/lib/swr/use-habits";
-import { Archive, Check, Settings2 } from "lucide-react";
+import { Archive, ArrowLeft, Check, Settings2 } from "lucide-react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { Suspense, useCallback } from "react";
 
 function Filters() {
   const searchParams = useSearchParams();
@@ -66,16 +68,19 @@ function Filters() {
 }
 
 export default function Home() {
+  const searchParams = useSearchParams();
   const { habits, isValidating } = useHabits();
+
+  const archived = searchParams.get("archived") === "true";
 
   return (
     <>
-      {habits?.length && (
-        <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
+        <Suspense fallback={<Skeleton className="h-9 w-[90.76px]" />}>
           <Filters />
-          <AddHabit inHeader />
-        </div>
-      )}
+        </Suspense>
+        <AddHabit inHeader />
+      </div>
       {isValidating ? (
         <div className="flex flex-col items-center justify-center gap-4">
           <p>Loading...</p>
@@ -88,9 +93,18 @@ export default function Home() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center gap-4">
-          <p>No habits found</p>
-          <p>Add a habit to get started</p>
-          <AddHabit />
+          <p>No {archived ? "archived" : ""} habits found</p>
+          {!archived && <p>Add a habit to get started</p>}
+          {!archived ? (
+            <AddHabit />
+          ) : (
+            <Button asChild>
+              <Link href="/">
+                <ArrowLeft className="mr-2 size-4" />
+                Go back
+              </Link>
+            </Button>
+          )}
         </div>
       )}
     </>

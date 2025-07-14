@@ -11,12 +11,14 @@ export default function ModalDelete({
   description,
   content,
   small = false,
+  text = "Delete",
 }: {
   onDelete: () => void;
   title: string;
   description?: string;
   content: React.ReactNode;
   small?: boolean;
+  text?: string;
 }) {
   const [showModal, setShowModal] = useState(false);
 
@@ -31,7 +33,7 @@ export default function ModalDelete({
   ) : (
     <Button variant="outline-destructive" onClick={() => setShowModal(true)}>
       <TrashIcon className="size-4" />
-      Delete Habit
+      {text}
     </Button>
   );
 
@@ -45,7 +47,10 @@ export default function ModalDelete({
         description={description}
         footer={{
           onSubmit: {
-            action: onDelete,
+            action: () => {
+              onDelete();
+              setShowModal(false);
+            },
             variant: "destructive",
             text: "Delete",
           },
