@@ -2,6 +2,7 @@ import z from "@/lib/zod";
 
 export const getHabitsQuerySchema = z.object({
   userId: z.string(),
+  archived: z.boolean().default(false).optional(),
 });
 
 export const createHabitBodySchema = z.object({
