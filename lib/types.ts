@@ -16,6 +16,7 @@ export interface HabitProps {
   startDate: Date;
   icon: string;
   color: "green" | "red" | "yellow" | "blue" | "purple" | "orange" | "pink";
+  archived: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
