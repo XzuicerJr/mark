@@ -26,7 +26,8 @@ export default function ArchiveHabit({ habitId }: { habitId: string }) {
         throw new Error("Failed to archive habit");
       }
 
-      mutate("/api/habits");
+      Promise.all([mutate("/api/habits"), mutate("/api/habits?archived=true")]);
+
       toast.success("Habit archived successfully");
     } catch (error) {
       console.error(error);

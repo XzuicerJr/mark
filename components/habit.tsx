@@ -97,7 +97,11 @@ export function Habit(props: HabitProps & { className?: string }) {
                     throw new Error("Failed to delete habit");
                   }
 
-                  mutate("/api/habits");
+                  Promise.all([
+                    mutate("/api/habits"),
+                    mutate("/api/habits?archived=true"),
+                  ]);
+
                   toast.success("Habit deleted successfully");
                 } catch (error) {
                   console.error(error);
@@ -126,7 +130,11 @@ export function Habit(props: HabitProps & { className?: string }) {
                     throw new Error("Failed to restore habit");
                   }
 
-                  mutate("/api/habits");
+                  Promise.all([
+                    mutate("/api/habits"),
+                    mutate("/api/habits?archived=true"),
+                  ]);
+
                   toast.success("Habit restored successfully");
                 } catch (error) {
                   console.error(error);
