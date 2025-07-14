@@ -4,11 +4,12 @@ import { prisma } from "@/prisma";
 
 export async function getHabits({
   userId,
+  archived = false,
 }: z.infer<typeof getHabitsQuerySchema>) {
   const habits = await prisma.habit.findMany({
     where: {
       userId,
-      archived: false,
+      archived,
     },
     orderBy: {
       createdAt: "desc",

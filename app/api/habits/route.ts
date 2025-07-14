@@ -7,9 +7,10 @@ import { createHabitBodySchema } from "@/lib/zod/schema/habits";
 import { NextResponse } from "next/server";
 
 // GET /api/habits – get all habits for a user
-export const GET = withSession(async ({ session }) => {
+export const GET = withSession(async ({ session, searchParams }) => {
   const response = await getHabits({
     userId: session.user.id,
+    archived: searchParams.archived === "true",
   });
 
   return NextResponse.json(response);

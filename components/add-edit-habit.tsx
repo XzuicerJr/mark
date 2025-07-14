@@ -123,15 +123,11 @@ export default function AddEditHabit({
     >
       <PencilLine className="size-4" />
     </Button>
-  ) : inHeader ? (
-    <div className="mb-4 flex justify-end">
-      <Button variant="outline" onClick={() => setShowModal(true)}>
-        <PlusIcon className="size-4" />
-        Add Habit
-      </Button>
-    </div>
   ) : (
-    <Button onClick={() => setShowModal(true)}>
+    <Button
+      variant={inHeader ? "outline" : "default"}
+      onClick={() => setShowModal(true)}
+    >
       <PlusIcon className="size-4" />
       Add Habit
     </Button>
