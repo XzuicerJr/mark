@@ -73,7 +73,7 @@ export default function Settings() {
               onSubmit={accountForm.handleSubmit(handleAccountUpdate)}
               className="space-y-6"
             >
-              <CardContent className="flex flex-col gap-2">
+              <CardContent className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
                   <Label>Name</Label>
                   <Input

@@ -139,6 +139,7 @@ export default function AddEditHabit({
       <Modal
         showModal={showModal}
         setShowModal={setShowModal}
+        headerClassName="flex-col items-start"
         title={props ? "Edit Habit" : "New Habit"}
         description={
           !props ? "Add a new habit to your daily routine." : undefined
@@ -180,6 +181,7 @@ export default function AddEditHabit({
             <Input
               {...register("name")}
               className="max-w-full"
+              containerClassName="max-w-full"
               error={errors.name?.message}
             />
           </div>
@@ -189,6 +191,7 @@ export default function AddEditHabit({
             <Input
               {...register("description")}
               className="max-w-full"
+              containerClassName="max-w-full"
               error={errors.description?.message}
             />
           </div>
@@ -229,7 +232,7 @@ export default function AddEditHabit({
 
           <div className="flex flex-col gap-2">
             <Label>Color</Label>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(40px,1fr))] gap-2">
               {[
                 "green",
                 "red",
@@ -242,7 +245,7 @@ export default function AddEditHabit({
                 <Button
                   key={color}
                   variant="outline"
-                  className={cn("h-10 flex-1 border-2")}
+                  className="relative h-10 min-w-10 flex-1 border-2"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       form.setValue("color", color as HabitProps["color"]);
@@ -260,7 +263,14 @@ export default function AddEditHabit({
                             .done
                         : "var(--accent-foreground)",
                   }}
-                />
+                >
+                  <span
+                    className={cn(
+                      "bg-accent-foreground absolute top-1/2 left-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-md transition-transform duration-200",
+                      form.watch("color") === color ? "scale-100" : "scale-0",
+                    )}
+                  />
+                </Button>
               ))}
             </div>
           </div>
