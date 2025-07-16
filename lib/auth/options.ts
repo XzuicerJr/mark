@@ -187,6 +187,7 @@ export const authOptions: NextAuthConfig = {
 
       // refresh the user's data if they update their name / email
       if (trigger === "update") {
+        console.log("updating user");
         const refreshedUser = await prisma.user.findUnique({
           where: {
             id: token.sub,

@@ -253,10 +253,11 @@ export default function AddEditHabit({
                   }
                   style={{
                     backgroundColor:
-                      getColor[color as HabitProps["color"]][theme].log.done,
+                      getColor[color as HabitProps["color"]][theme]?.log.done,
                     borderColor:
                       form.watch("color") !== color
-                        ? getColor[color as HabitProps["color"]][theme].log.done
+                        ? getColor[color as HabitProps["color"]][theme]?.log
+                            .done
                         : "var(--accent-foreground)",
                   }}
                 />

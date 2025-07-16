@@ -20,18 +20,19 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, MouseEventHandler, SetStateAction } from "react";
 import ModalDelete from "../modal-delete";
 import { Button } from "./button";
 
 interface ModalProps {
   className?: string;
+  headerClassName?: string;
   children: React.ReactNode;
   title?: string;
   description?: string;
   footer?: {
     onDelete?: {
-      action: () => void;
+      action: MouseEventHandler<HTMLButtonElement>;
       modal: {
         title: string;
         description?: string;
@@ -39,12 +40,12 @@ interface ModalProps {
       };
     };
     onSubmit?: {
-      action: () => void;
+      action: MouseEventHandler<HTMLButtonElement>;
       text: string;
       variant?: "default" | "destructive";
     };
     onCancel?: {
-      action?: () => void;
+      action?: MouseEventHandler<HTMLButtonElement>;
       text: string;
     };
   };
@@ -55,6 +56,7 @@ interface ModalProps {
 
 export default function Modal({
   className,
+  headerClassName,
   children,
   title,
   description,
@@ -73,18 +75,18 @@ export default function Modal({
           aria-describedby={description ?? "this is a drawer"}
         >
           {(icon || title || description) && (
-            <DrawerHeader className="flex-row items-center">
+            <DrawerHeader
+              className={cn("flex-row items-center", headerClassName)}
+            >
               {icon && (
                 <div className="flex size-12 items-center justify-center">
                   {icon}
                 </div>
               )}
-              <div className="flex flex-col items-start">
-                {title && <DrawerTitle>{title}</DrawerTitle>}
-                {description && (
-                  <DrawerDescription>{description}</DrawerDescription>
-                )}
-              </div>
+              {title && <DrawerTitle>{title}</DrawerTitle>}
+              {description && (
+                <DrawerDescription>{description}</DrawerDescription>
+              )}
             </DrawerHeader>
           )}
           <div className="space-y-4 px-4">{children}</div>
@@ -134,18 +136,18 @@ export default function Modal({
         aria-describedby={description ?? "this is a dialog"}
       >
         {(icon || title || description) && (
-          <DialogHeader className="flex-row items-center">
+          <DialogHeader
+            className={cn("flex-row items-center", headerClassName)}
+          >
             {icon && (
               <div className="flex size-12 items-center justify-center">
                 {icon}
               </div>
             )}
-            <div>
-              {title && <DialogTitle>{title}</DialogTitle>}
-              {description && (
-                <DialogDescription>{description}</DialogDescription>
-              )}
-            </div>
+            {title && <DialogTitle>{title}</DialogTitle>}
+            {description && (
+              <DialogDescription>{description}</DialogDescription>
+            )}
           </DialogHeader>
         )}
         {children}

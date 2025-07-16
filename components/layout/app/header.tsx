@@ -9,7 +9,7 @@ export default function Header() {
   const { data: session } = useSession();
 
   return (
-    <header className="flex h-9 w-full items-center justify-between px-2 sm:p-0">
+    <header className="flex min-h-9 w-full items-center justify-between px-2 sm:p-0">
       <Link href="/" className="flex items-center gap-2 font-medium">
         <Logo />
         {process.env.NEXT_PUBLIC_APP_NAME}
