@@ -162,7 +162,14 @@ export default function Modal({
               />
             )}
             {(footer.onSubmit || footer.onCancel) && (
-              <div className="flex items-center gap-2">
+              <div className="flex w-full items-center justify-end gap-2">
+                {footer.onCancel && (
+                  <DialogClose asChild>
+                    <Button variant="outline" onClick={footer.onCancel.action}>
+                      {footer.onCancel.text}
+                    </Button>
+                  </DialogClose>
+                )}
                 {footer.onSubmit && (
                   <Button
                     variant={footer.onSubmit.variant ?? "default"}
@@ -170,13 +177,6 @@ export default function Modal({
                   >
                     {footer.onSubmit.text}
                   </Button>
-                )}
-                {footer.onCancel && (
-                  <DialogClose asChild>
-                    <Button variant="outline" onClick={footer.onCancel.action}>
-                      {footer.onCancel.text}
-                    </Button>
-                  </DialogClose>
                 )}
               </div>
             )}

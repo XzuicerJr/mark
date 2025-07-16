@@ -28,7 +28,10 @@ export function NavUser({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="hover:bg-accent-foreground/10">
+        <Button
+          variant="ghost"
+          className="hover:bg-accent-foreground/10 dark:hover:bg-accent-foreground/10 cursor-pointer"
+        >
           <span className="hidden truncate font-medium sm:block">
             {user.name}
           </span>
@@ -70,14 +73,14 @@ export function NavUser({
         <ThemeSwitcher />
         <DropdownMenuItem asChild>
           <Link href="/settings">
-            <Settings />
             Settings
+            <Settings className="ml-auto size-4" />
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>
-          <LogOut />
           Log out
+          <LogOut className="ml-auto size-4" />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
