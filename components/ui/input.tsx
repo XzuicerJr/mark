@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { AlertCircle, Eye, EyeClosed } from "lucide-react";
 import React, { useCallback, useState } from "react";
@@ -5,10 +7,23 @@ import React, { useCallback, useState } from "react";
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
+  hidePasswordToggle?: boolean;
+  suffix?: React.ReactNode;
+  containerClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  (
+    {
+      className,
+      type,
+      hidePasswordToggle,
+      suffix,
+      containerClassName,
+      ...props
+    },
+    ref,
+  ) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
     const toggleIsPasswordVisible = useCallback(
@@ -18,12 +33,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div>
-        <div className="relative flex">
+        <div
+          className={cn("relative flex w-full max-w-md", containerClassName)}
+        >
           <input
             type={isPasswordVisible ? "text" : type}
             className={cn(
               "focus:border-foreground focus:ring-foreground block w-full min-w-0 appearance-none rounded-md border border-neutral-300 px-3 py-2 placeholder-neutral-400 shadow-sm focus:outline-none sm:text-sm",
-              "max-w-md read-only:bg-neutral-100 read-only:text-neutral-500",
+              "max-w-md read-only:bg-neutral-900/5 disabled:cursor-not-allowed dark:read-only:bg-neutral-100/10",
               props.error &&
                 "border-red-500 focus:border-red-500 focus:ring-red-500",
               className,
@@ -71,6 +88,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 )}
               </button>
             )}
+            {!props.error &&
+              type !== "password" &&
+              !hidePasswordToggle &&
+              suffix && (
+                <div className="absolute inset-y-0 right-0 flex items-center justify-center px-3">
+                  {suffix}
+                </div>
+              )}
           </div>
         </div>
 

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Modal from "@/components/ui/modal";
 import { TrashIcon } from "lucide-react";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 
 export default function ModalDelete({
   onDelete,
@@ -11,29 +11,37 @@ export default function ModalDelete({
   description,
   content,
   small = false,
-  text = "Delete",
+  button = {
+    text: "Delete",
+    variant: "outline-destructive",
+    hideIcon: false,
+  },
 }: {
-  onDelete: () => void;
+  onDelete: MouseEventHandler<HTMLButtonElement>;
   title: string;
   description?: string;
   content: React.ReactNode;
   small?: boolean;
-  text?: string;
+  button?: {
+    text?: string;
+    variant?: "outline-destructive" | "destructive";
+    hideIcon?: boolean;
+  };
 }) {
   const [showModal, setShowModal] = useState(false);
 
   const ButtonComponent = small ? (
     <Button
-      variant="outline-destructive"
+      variant={button.variant}
       size="icon"
       onClick={() => setShowModal(true)}
     >
       <TrashIcon className="size-4" />
     </Button>
   ) : (
-    <Button variant="outline-destructive" onClick={() => setShowModal(true)}>
-      <TrashIcon className="size-4" />
-      {text}
+    <Button variant={button.variant} onClick={() => setShowModal(true)}>
+      {!button.hideIcon && <TrashIcon className="size-4" />}
+      {button.text}
     </Button>
   );
 
@@ -47,8 +55,8 @@ export default function ModalDelete({
         description={description}
         footer={{
           onSubmit: {
-            action: () => {
-              onDelete();
+            action: (e) => {
+              onDelete(e);
               setShowModal(false);
             },
             variant: "destructive",

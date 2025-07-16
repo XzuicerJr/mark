@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, LogOut } from "lucide-react";
+import { ChevronDown, LogOut, Settings } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { ThemeSwitcher } from "./theme-switcher";
 
 export function NavUser({
@@ -67,6 +68,12 @@ export function NavUser({
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <ThemeSwitcher />
+        <DropdownMenuItem asChild>
+          <Link href="/settings">
+            <Settings />
+            Settings
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut()}>
           <LogOut />
