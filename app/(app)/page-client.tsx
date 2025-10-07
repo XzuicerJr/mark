@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useHabits from "@/lib/swr/use-habits";
+import { cn } from "@/lib/utils";
 import { Archive, ArrowLeft, Check, Settings2 } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -18,34 +19,54 @@ import { Suspense } from "react";
 function Filters() {
   const { queryParams, searchParamsObj } = useRouterStuff();
 
-  const archived = searchParamsObj.archived === "true";
-
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-          Filters
-          <Settings2 className="ml-auto size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-        side="bottom"
-        align="start"
-      >
-        <DropdownMenuItem
-          onClick={() => {
-            queryParams(
-              archived ? { del: ["archived"] } : { set: { archived: "true" } },
-            );
-          }}
+    <div className="flex items-center gap-2">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">
+            Filters
+            <Settings2 className="ml-auto size-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+          side="bottom"
+          align="start"
         >
-          <Archive className="mr-2 size-4" />
-          Archived
-          {archived && <Check className="ml-auto size-4" />}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuItem
+            onClick={() => {
+              queryParams(
+                searchParamsObj.archived === "true"
+                  ? { del: ["archived"] }
+                  : { set: { archived: "true" } },
+              );
+            }}
+          >
+            <Archive className="mr-2 size-4" />
+            Archived
+            {searchParamsObj.archived === "true" && (
+              <Check className="ml-auto size-4" />
+            )}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* TODO: Change this for Tabs */}
+      <Button
+        onClick={() => {
+          queryParams(!!searchParamsObj.view ? { del: ["view"] } : {});
+        }}
+      >
+        Full
+      </Button>
+      <Button
+        onClick={() => {
+          queryParams({ set: { view: "month" } });
+        }}
+      >
+        Month
+      </Button>
+    </div>
   );
 }
 
@@ -54,6 +75,7 @@ function HomeView() {
   const { habits, isValidating } = useHabits();
 
   const archived = searchParamsObj.archived === "true";
+  const monthView = searchParamsObj.view === "month";
 
   return (
     <>
@@ -66,7 +88,12 @@ function HomeView() {
           <p>Loading...</p>
         </div>
       ) : !!habits?.length ? (
-        <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
+        <div
+          className={cn(
+            "xxl:grid-cols-3! grid grid-cols-1 gap-2 md:grid-cols-2", // Full View
+            monthView && "flex flex-wrap items-center",
+          )}
+        >
           {habits.map((habit) => (
             <Habit key={`habit-${habit.id}`} {...habit} />
           ))}

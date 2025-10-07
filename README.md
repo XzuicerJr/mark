@@ -1,5 +1,5 @@
 <div align="center">
-    <a href="https://mark.zamora.dev" target="_blank">
+    <a href="https://mark.zmra.dev" target="_blank">
         Website
     </a>
     <span>&nbsp;❖&nbsp;</span>
@@ -11,7 +11,7 @@
         Contribute
     </a>
     <span>&nbsp;❖&nbsp;</span>
-    <a href="https://zamora.dev/tw">
+    <a href="https://zmra.dev/tw">
         X
     </a>
     <span>&nbsp;❖&nbsp;</span>

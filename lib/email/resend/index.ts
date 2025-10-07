@@ -17,7 +17,7 @@ export const sendResendEmail = async (opts: ResendEmailOptions) => {
 
   return await resend.emails.send({
     to: email,
-    from: from || "Mark <system@zamora.dev>",
+    from: from || "Mark <system@zmra.dev>",
     bcc: bcc,
     replyTo,
     subject,
